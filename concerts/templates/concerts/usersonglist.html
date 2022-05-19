@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+  <main>
+      <h1>Songs you have heard </h1>
+    {% if song_list %}
+      <ul>
+           {% for song in song_list %}
+           <li>{{song}}</li> 
+           {% endfor %}
+       </ul>  
+       {%else%} 
+       <p> You have not been to any concerts so you've heard no songs live.</p> 
+      {%endif %}
+      
+      
+     
+
+</main>
+{% endblock content %}

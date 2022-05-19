@@ -1,0 +1,22 @@
+{% block content %}
+  <main>
+      <h1>Testing: </h1>
+      <form action="{% url 'test' concertdict  %}" method="POST">
+        {% csrf_token %}
+        <input type="submit" value="Yes!" />
+      </form>
+
+
+</main>
+{% endblock content %}
+
+
+
+  {% comment %} setlists = 20 of the info below 
+  [{'venue': "Ronnie Scott's Jazz Club", 
+  'eventDate': '06-12-2021', 
+  'city': 'London', 
+  'country': 'United Kingdom', 
+  'id': '4b8bf31a'},
+  ...
+  ] {% endcomment %}

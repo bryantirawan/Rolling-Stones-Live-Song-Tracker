@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% load customtags %}
+{% block content %}
+  <main>
+      <h1>Setlists: </h1>
+      {% if user.is_authenticated %}
+        <table>
+    <thead>
+        <tr>
+            <th>Venue</th>
+            <th>Date</th>
+            <th>City</th>
+            <th>Country</th>
+            <th>Have you been?!</th>
+            <th>Special Info</th>
+        </tr>
+    </thead>
+   
+    {% for concertdict in setlists %}
+        <tbody>
+            <tr>
+                <td>{{ concertdict.venue }}</td>
+                <td>{{ concertdict.eventDate }}</td>
+                <td>{{ concertdict.city }}</td>
+                <td>{{ concertdict.country }}</td>
+                
+
+                
+              {% if user.concerts.all %}
+              <td>
+                    {% with added as True %}
+                    {% for concert_query in user.concerts.all %}
+                    {% if concert_query.concertid == concertdict.id %}
+        
+                    
+                        <p>Concert already added!</p> {% changeStatement added as added %}
+                      
+                       
+                        {% elif forloop.last and not added%}
+                        
+                        <form action="{% url 'concert_add' concertdict.id  %}" method="POST">
+                            {% csrf_token %}
+                            <input type="submit" value="Yes!" />
+                          </form> 
+                          {% endif %}
+                          {% endfor %}
+                          {% endwith %}
+                </td> 
+                {% else %}
+                <td>                        
+                    <form action="{% url 'concert_add' concertdict.id  %}" method="POST">
+                    {% csrf_token %}
+                    <input type="submit" value="Yes!" />
+                  </form> 
+                </td>
+                {% endif %}
+                <td>{{ concertdict.specialinfo }}</td>
+            </tr>
+        </tbody>
+    {% endfor %}
+    {% else %} 
+    <p> You need to log in first </p> 
+    {% endif %}
+</table>
+
+</main>
+{% endblock content %}
+
+

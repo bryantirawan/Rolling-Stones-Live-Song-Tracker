@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block content %}
+  <main>
+      <h1>Concerts you have been to: </h1>
+    {%if concert_list %}
+      <table>
+    <thead>
+        <tr>
+            <th>Venue</th>
+            <th>Date</th>
+            <th>City</th>
+            <th>Country</th>
+            <th>Remove from list:</th>
+        </tr>
+    </thead>
+    {% for concert in concert_list %}
+        <tbody>
+            <tr>
+                <td>{{ concert.venue }}</td>
+                <td>{{ concert.date }}</td>
+                <td>{{ concert.city }}</td>
+                <td>{{ concert.country }}</td>
+                <td>
+                     <form method="post" action="{% url 'delete_concert' concert.pk %}">
+                        {% csrf_token %}
+                        <input type="submit" value="Delete" />             
+                    </form> 
+                </td>
+            </tr>
+        </tbody>
+    {% endfor %}
+</table>
+{% else %} 
+You're lame and have never been to a Rolling Stones concert. 
+{%endif%}
+
+</main>
+{% endblock content %}

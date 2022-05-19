@@ -1,0 +1,5 @@
+header nav ul li {
+    display: inline-block;
+    margin: 0 1em;
+    padding: 1em 0 1em 0;
+}
