@@ -181,9 +181,8 @@ table {
     border-bottom: 2px solid #DEDEDE;
 }
 
-.date-table {
-    padding:20px;
-}
+
+
 
 /* Center align the text on specific table header cells */
 .my-tasks-list tbody td:nth-child(2),
