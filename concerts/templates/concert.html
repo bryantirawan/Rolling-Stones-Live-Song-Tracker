@@ -22,7 +22,6 @@
             <tr>
               <td>{{ concertdict.eventDate}}</td>  
               <td>{{ concertdict.venue }}</td>
-                
                 <td>{{ concertdict.city }}</td>
                 <td>{{ concertdict.country }}</td>
                 
@@ -42,9 +41,9 @@
                         
                         <form action="{% url 'concert_add' concertdict.id  %}" method="POST">
                             {% csrf_token %}
-                            <a href="https://imgbb.com/"><img src="https://i.ibb.co/5Bx6M7s/82381-Sticker-Rolling-Stones-Langue-logo.png" alt="82381-Sticker-Rolling-Stones-Langue-logo" border="0"></a>
-                            {% comment %} <button>Yes!</button> {% endcomment %}
-                            {% comment %} <input type="submit" value="Yes!" /> {% endcomment %}
+                            <button class="concertbutton">        
+                            </button>
+
                           </form> 
                           {% endif %}
                           {% endfor %}
@@ -54,7 +53,8 @@
                 <td>                        
                     <form action="{% url 'concert_add' concertdict.id  %}" method="POST">
                     {% csrf_token %}
-                    <input type="submit" value="Yes!" />
+                    <button class="concertbutton">        
+                    </button>
                   </form> 
                 </td>
                 {% endif %}

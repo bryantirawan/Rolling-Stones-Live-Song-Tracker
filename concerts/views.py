@@ -578,7 +578,8 @@ def log_concert_and_song(request, concertdict):
         url = 'https://api.setlist.fm/rest/1.0/'
         setlist_path = f'setlist/{concertdict}'
         header = {
-        "x-api-key": "D8tTr14QrM5GLkqKQejjnNX3trT-o_cjW7gL",
+         # "x-api-key": "D8tTr14QrM5GLkqKQejjnNX3trT-o_cjW7gL",
+        "x-api-key": "1Lw-KTV9OFozLe7JpUeAyOdJHJH9HeVWNn2B",
         "Accept": "application/json"
         } 
         params = {
@@ -608,8 +609,10 @@ def log_concert_and_song(request, concertdict):
         user_concert_list.append(concertdict)  
 
         songdict = {} # {concertid: [song1, song2, etc.]} #not needed for saving song name but in case I need to reference 
-        list_of_songs_from_api = setlists['sets']['set'][0]['song'] #[{"name": "Shame, Shame, Shame","cover": {},},{"name": "Down the Road Apiece", "cover": { },}]
+        list_of_songs_from_api = []
         try: 
+            list_of_songs_from_api = setlists['sets']['set'][0]['song'] #[{"name": "Shame, Shame, Shame","cover": {},},{"name": "Down the Road Apiece", "cover": { },}]
+        
             list_of_encores_from_api = setlists['sets']['set'][1]['song'] 
             list_of_songs_from_api.extend(list_of_encores_from_api)
             list_of_encores_from_api = setlists['sets']['set'][2]['song'] 

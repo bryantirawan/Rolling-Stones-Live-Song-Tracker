@@ -16,6 +16,8 @@ button{
     font-size: 16px;
     margin: 5px;
     padding: 5px; 
+    background-color: transparent;
+    cursor: pointer;
 }
 /* Set the background color of all pages */
 html,
@@ -201,4 +203,16 @@ table {
 .project-list tbody :not(tr:last-child) td,
 .project-detail tbody :not(tr:last-child) td {
     border-bottom: 1px solid #DEDEDE;
+}
+
+.concertbutton {
+    background-image: url('https://i.ibb.co/5Bx6M7s/82381-Sticker-Rolling-Stones-Langue-logo.png');
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    /* put the height and width of your image here */
+    height: 60px;
+    width: 60px;
+    border: none;
+    background-color: none;
+    cursor: pointer;
 }
