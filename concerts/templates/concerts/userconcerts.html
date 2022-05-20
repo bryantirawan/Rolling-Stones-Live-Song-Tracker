@@ -1,31 +1,38 @@
 {% extends 'base.html' %}
 {% block content %}
   <main>
+    <div class="project-list">
       <h1>Concerts you have been to: </h1>
     {%if concert_list %}
-      <table>
+    <h3>Number of concerts: {{concert_list|length}} </h3>
+    <form method="Post" action="{% url 'delete_user_concerts_and_songs' %}"> 
+        {% csrf_token %}
+        <button>Clear Cocnerts</button> 
+      </form>  
+      
+    <table>
     <thead>
         <tr>
-            <th>Venue</th>
             <th>Date</th>
+            <th>Venue</th>
             <th>City</th>
             <th>Country</th>
-            <th>Remove from list:</th>
+            {% comment %} <th>Remove from list:</th> {% endcomment %}
         </tr>
     </thead>
     {% for concert in concert_list %}
         <tbody>
             <tr>
-                <td>{{ concert.venue }}</td>
                 <td>{{ concert.date }}</td>
+                <td>{{ concert.venue }}</td>
                 <td>{{ concert.city }}</td>
                 <td>{{ concert.country }}</td>
-                <td>
+                {% comment %} <td>
                      <form method="post" action="{% url 'delete_concert' concert.pk %}">
                         {% csrf_token %}
                         <input type="submit" value="Delete" />             
                     </form> 
-                </td>
+                </td> {% endcomment %}
             </tr>
         </tbody>
     {% endfor %}
@@ -33,6 +40,6 @@
 {% else %} 
 You're lame and have never been to a Rolling Stones concert. 
 {%endif%}
-
+</div>
 </main>
 {% endblock content %}

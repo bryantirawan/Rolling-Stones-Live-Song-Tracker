@@ -1,0 +1,73 @@
+{% extends 'setlistnav.html' %}
+{% load customtags %}
+{% block content %}
+  <main>
+    <div class="project-list">
+      <h1>Setlists: </h1>
+      {% if user.is_authenticated %}
+        <table>
+    <thead>
+        <tr>
+            <th>Date   </th>
+            <th>Venue</th>
+            <th>City</th>
+            <th>Country</th>
+            <th>You've Been?!</th>
+            <th>Special Info</th>
+        </tr>
+    </thead>
+   
+    {% for concertdict in setlists %}
+        <tbody>
+            <tr>
+              <td>{{ concertdict.eventDate}}</td>  
+              <td>{{ concertdict.venue }}</td>
+                
+                <td>{{ concertdict.city }}</td>
+                <td>{{ concertdict.country }}</td>
+                
+
+                
+              {% if user.concerts.all %}
+              <td>
+                    {% with added as True %}
+                    {% for concert_query in user.concerts.all %}
+                    {% if concert_query.concertid == concertdict.id %}
+        
+                    
+                        <p>Concert already added!</p> {% changeStatement added as added %}
+                      
+                       
+                        {% elif forloop.last and not added%}
+                        
+                        <form action="{% url 'concert_add' concertdict.id  %}" method="POST">
+                            {% csrf_token %}
+                            <a href="https://imgbb.com/"><img src="https://i.ibb.co/5Bx6M7s/82381-Sticker-Rolling-Stones-Langue-logo.png" alt="82381-Sticker-Rolling-Stones-Langue-logo" border="0"></a>
+                            {% comment %} <button>Yes!</button> {% endcomment %}
+                            {% comment %} <input type="submit" value="Yes!" /> {% endcomment %}
+                          </form> 
+                          {% endif %}
+                          {% endfor %}
+                          {% endwith %}
+                </td> 
+                {% else %}
+                <td>                        
+                    <form action="{% url 'concert_add' concertdict.id  %}" method="POST">
+                    {% csrf_token %}
+                    <input type="submit" value="Yes!" />
+                  </form> 
+                </td>
+                {% endif %}
+                <td>{{ concertdict.specialinfo }}</td>
+            </tr>
+        </tbody>
+    {% endfor %}
+    {% else %} 
+    <p> You need to log in first </p> 
+    {% endif %}
+</table>
+</div>
+</main>
+{% endblock content %}
+
+

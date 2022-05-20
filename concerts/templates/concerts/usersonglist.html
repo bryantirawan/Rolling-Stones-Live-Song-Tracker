@@ -1,8 +1,10 @@
 {% extends 'base.html' %}
 {% block content %}
   <main>
+    <div class="my-tasks-list">
       <h1>Songs you have heard </h1>
     {% if song_list %}
+    <h3>Number of concerts: {{song_list|length}} </h3>
       <ul>
            {% for song in song_list %}
            <li>{{song}}</li> 
@@ -11,9 +13,6 @@
        {%else%} 
        <p> You have not been to any concerts so you've heard no songs live.</p> 
       {%endif %}
-      
-      
-     
-
+      </div>
 </main>
 {% endblock content %}

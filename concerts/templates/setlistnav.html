@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% load static %} 
+{% block pagination %}
+{% if user.is_authenticated %}
+<nav>
+    <ul>
+      
+      {% if request.resolver_match.view_name == 'choose_concerts' %}
+      <li>
+        Page 1
+      </li>
+      {% else %}
+      <li>
+        <a href="{% url 'choose_concerts' %}">Page 1</a>
+      </li>
+      {% endif %}
+      {% if request.resolver_match.view_name == 'concerts_second_page' %}
+      <li>
+        Page 2
+      </li>
+      {% else %}
+      <li>
+        <a href="{% url 'concerts_second_page' %}">Page 2</a>
+      </li>
+      {% endif %}
+      {% if request.resolver_match.view_name == 'concerts_third_page' %}
+      <li>
+        Page 3
+      </li>
+      {% else %}
+      <li>
+        <a href="{% url 'concerts_third_page' %}">Page 3</a>
+      </li>
+      {% endif %}
+      {% if request.resolver_match.view_name == 'concerts_fourth_page' %}
+      <li>
+        Page 4
+      </li>
+      {% else %}
+      <li>
+        <a href="{% url 'concerts_fourth_page' %}">Page 4</a>
+      </li>
+      {% endif %}
+      {% if request.resolver_match.view_name == 'concerts_fifth_page' %}
+      <li>
+        Page 5
+      </li>
+      {% else %}
+      <li>
+        <a href="{% url 'concerts_fifth_page' %}">Page 5</a>
+      </li>
+      {% endif %}
+      {% if request.resolver_match.view_name == 'concerts_sixth_page' %}
+      <li>
+        Page 6
+      </li>
+      {% else %}
+      <li>
+        <a href="{% url 'concerts_sixth_page' %}">Page 6</a>
+      </li>
+      {% endif %}
+      {% if request.resolver_match.view_name == 'concerts_seventh_page' %}
+      <li>
+        Page 7
+      </li>
+      {% else %}
+      <li>
+        <a href="{% url 'concerts_seventh_page' %}">Page 7</a>
+      </li>
+      {% endif %}
+      {% if request.resolver_match.view_name == 'concerts_eighth_page' %}
+      <li>
+        Page 8
+      </li>
+      {% else %}
+      <li>
+        <a href="{% url 'concerts_eighth_page' %}">Page 8</a>
+      </li>
+      {% endif %}
+      {% if request.resolver_match.view_name == 'concerts_ninth_page' %}
+      <li>
+        Page 9
+      </li>
+      {% else %}
+      <li>
+        <a href="{% url 'concerts_ninth_page' %}">Page 9</a>
+      </li>
+      {% endif %}
+      {% if request.resolver_match.view_name == 'concerts_tenth_page' %}
+      <li>
+        Page 10
+      </li>
+      {% else %}
+      <li>
+        <a href="{% url 'concerts_tenth_page' %}">Page 10</a>
+      </li>
+      {% endif %}
+    </ul> 
+  </nav>
+  {% endif %}
+{% endblock pagination %}
