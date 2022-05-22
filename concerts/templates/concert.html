@@ -4,7 +4,9 @@
   <main>
     <div class="project-list">
       <h1>Setlists: </h1>
-      {% if user.is_authenticated %}
+      {% if user.is_authenticated == False %}
+      <p> You need to log in first </p> 
+      {% else %}
         <table>
     <thead>
         <tr>
@@ -62,8 +64,8 @@
             </tr>
         </tbody>
     {% endfor %}
-    {% else %} 
-    <p> You need to log in first </p> 
+    
+    
     {% endif %}
 </table>
 </div>
