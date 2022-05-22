@@ -51,6 +51,7 @@ def display_pageone_concerts(request):
         if page_setlist_json.get('setlist') == None: 
             time.sleep(0.5)
             page_setlist_json = requests.get(f"{url}{artist_setlist_path}", params=params, headers=header).json() 
+            breakpoint()
         page_setlist = page_setlist_json['setlist'] 
         
         setlists['setlist'].extend(page_setlist) 

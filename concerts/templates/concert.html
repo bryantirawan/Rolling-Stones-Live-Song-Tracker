@@ -1,7 +1,28 @@
 {% extends 'setlistnav.html' %}
 {% load customtags %}
 {% block content %}
-  <main>
+{% comment %} <script>
+  //Get the button:
+mybutton = document.getElementById("myBtn");
+
+// When the user scrolls down 20px from the top of the document, show the button
+window.onscroll = function() {scrollFunction()};
+
+function scrollFunction() {
+  if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+    mybutton.style.display = "block";
+  } else {
+    mybutton.style.display = "none";
+  }
+}
+
+// When the user clicks on the button, scroll to the top of the document
+function topFunction() {
+  document.body.scrollTop = 0; // For Safari
+  document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+}
+</script>   {% endcomment %}
+<main>
     <div class="project-list">
       <h1>Setlists: </h1>
       {% if user.is_authenticated == False %}
@@ -22,7 +43,7 @@
     {% for concertdict in setlists %}
         <tbody>
             <tr>
-              <td>{{ concertdict.eventDate}}</td>  
+              <td class="dateth">{{ concertdict.eventDate}}</td>  
               <td>{{ concertdict.venue }}</td>
                 <td>{{ concertdict.city }}</td>
                 <td>{{ concertdict.country }}</td>
@@ -68,11 +89,14 @@
     
     {% endif %}
 </table>
+{% comment %} <button onclick="topFunction()" id="myBtn" title="Go to top">Top</button> {% endcomment %}
 </div>
+<footer>
+  
+</footer>
 </main>
 
-<footer>
-</footer>
+
 
 
 {% endblock content %}
