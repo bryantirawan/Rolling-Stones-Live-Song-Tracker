@@ -19,6 +19,10 @@ button{
     background-color: transparent;
     cursor: pointer;
 }
+
+button:hover {
+    background-color: #ba3434;
+}
 /* Set the background color of all pages */
 html,
 body {
@@ -38,19 +42,30 @@ header nav ul {
     margin-top: 0;
     margin-bottom: 2em;
     padding: 0 0 0 1em;
+    
+}
+
+.pagenav {
+    text-align: center;
 }
 
 /* Set the spacing and layout of the nav list items */
 header nav ul li {
     display: inline-block;
     margin: 0 1em;
-    padding: 1em 0 1em 0;
+    padding: 1em 5px 1em 5px;
+    
 }
 
 /* Set the style of the links in the nav */
 header nav ul li a {
     font-weight: bold;
+    color: black;
     text-decoration: none;
+}
+
+header nav ul li:hover {
+    background-color: #ba3434;
 }
 
 /* Make the input tags look nicer */
@@ -215,4 +230,8 @@ table {
     border: none;
     background-color: none;
     cursor: pointer;
+}
+
+.concertbutton:hover {
+    background-color: transparent;
 }

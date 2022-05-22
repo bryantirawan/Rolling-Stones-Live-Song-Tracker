@@ -2,7 +2,7 @@
 {% load static %} 
 {% block pagination %}
 {% if user.is_authenticated %}
-<nav>
+<nav class="pagenav">
     <ul>
       
       {% if request.resolver_match.view_name == 'choose_concerts' %}

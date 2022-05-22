@@ -30,12 +30,12 @@ def display_pageone_concerts(request):
     "Accept": "application/json"
     } 
     params = {
-        "p": 1
+        "p": 1 ######## 
         }
     setlists = requests.get(f"{url}{artist_setlist_path}", params=params, headers=header).json()
     
     x = 2
-    for x in range (2, 11): 
+    for x in range (2, 11): ##########
         url = 'https://api.setlist.fm/rest/1.0/'
         artist_setlist_path = 'artist/b071f9fa-14b0-4217-8e97-eb41da73f598/setlists'
         header = {
@@ -596,23 +596,26 @@ def log_concert_and_song(request, concertdict):
         concertdict['country'] = setlists['venue']['city']['country']['name']
         concertdict['id'] = setlists['id'] 
         concert_id_to_generate_songs = concertdict['id']
-        Concert_save = Concert(
-            concertid=concertdict['id'], 
-            date=concertdict['eventDate'], 
-            venue=concertdict['venue'], 
-            city=concertdict['city'], 
-            country=concertdict['country'], 
-            )
-        Concert_save.save() 
-        Concert_save.user.add(request.user)
-        
+        try: 
+            Concert_save = Concert.objects.get(concertid = concertdict['id']) #check to see if Concert exists already 
+        except: 
+            Concert_save = Concert(
+                concertid=concertdict['id'], 
+                date=concertdict['eventDate'], 
+                venue=concertdict['venue'], 
+                city=concertdict['city'], 
+                country=concertdict['country'], 
+                )
+            
+        Concert_save.save() #save instance to Concer model 
+        Concert_save.user.add(request.user) #assign user to Concert just saved (many to many needs to be created before assigned)
+            
         user_concert_list.append(concertdict)  
 
         songdict = {} # {concertid: [song1, song2, etc.]} #not needed for saving song name but in case I need to reference 
-        list_of_songs_from_api = []
+        list_of_songs_from_api = [] 
         try: 
             list_of_songs_from_api = setlists['sets']['set'][0]['song'] #[{"name": "Shame, Shame, Shame","cover": {},},{"name": "Down the Road Apiece", "cover": { },}]
-        
             list_of_encores_from_api = setlists['sets']['set'][1]['song'] 
             list_of_songs_from_api.extend(list_of_encores_from_api)
             list_of_encores_from_api = setlists['sets']['set'][2]['song'] 
@@ -630,19 +633,18 @@ def log_concert_and_song(request, concertdict):
         for song in list_of_songs_from_api: #song = {"name": "Shame, Shame, Shame","cover": {},}
             song_name = song['name'] 
             try: 
-                Song_save = Song.objects.get(name=song_name, user=request.user) 
+                Song_save = Song.objects.get(name=song_name) 
             except: 
                 Song_save = Song(
                     name=song_name,
                 )
                 
-                Song_save.save() 
-                Song_save.user.add(request.user)
-            
+            Song_save.save() 
+            Song_save.user.add(request.user)
             Concert_save.song.add(Song_save) 
 
-            final_list.append(song['name'])
-            songdict[concert_id_to_generate_songs] = final_list 
+            final_list.append(song['name']) #not really needed but made just in case needed to reference 
+            songdict[concert_id_to_generate_songs] = final_list #not really needed but made just in case needed to reference 
         
         return redirect("user_concert_list")
     else:
