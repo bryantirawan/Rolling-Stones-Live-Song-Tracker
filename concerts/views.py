@@ -602,10 +602,10 @@ def log_concert_and_song(request, concertdict):
             venue=concertdict['venue'], 
             city=concertdict['city'], 
             country=concertdict['country'], 
-            user = request.user
             )
-        
         Concert_save.save() 
+        Concert_save.user.add(request.user)
+        
         user_concert_list.append(concertdict)  
 
         songdict = {} # {concertid: [song1, song2, etc.]} #not needed for saving song name but in case I need to reference 
@@ -634,9 +634,10 @@ def log_concert_and_song(request, concertdict):
             except: 
                 Song_save = Song(
                     name=song_name,
-                    user=request.user
                 )
+                
                 Song_save.save() 
+                Song_save.user.add(request.user)
             
             Concert_save.song.add(Song_save) 
 
