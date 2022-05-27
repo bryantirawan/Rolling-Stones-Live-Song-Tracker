@@ -21,7 +21,7 @@ class ConcertCreateView(LoginRequiredMixin, CreateView):
         form.instance.user = self.request.user
         return super().form_valid(form)     
 
-def display_pageone_concerts(request): 
+def display_concerts_for_page(request, p, range_min, range_max, sleep): 
     url = 'https://api.setlist.fm/rest/1.0/'
     artist_setlist_path = 'artist/b071f9fa-14b0-4217-8e97-eb41da73f598/setlists'
     header = {
@@ -30,12 +30,12 @@ def display_pageone_concerts(request):
     "Accept": "application/json"
     } 
     params = {
-        "p": 1 ######## 
+        "p": p
         }
     setlists = requests.get(f"{url}{artist_setlist_path}", params=params, headers=header).json()
     
-    x = 2
-    for x in range (2, 11): ##########
+    x = range_min
+    for x in range(range_min, range_max): ##########
         url = 'https://api.setlist.fm/rest/1.0/'
         artist_setlist_path = 'artist/b071f9fa-14b0-4217-8e97-eb41da73f598/setlists'
         header = {
@@ -49,7 +49,7 @@ def display_pageone_concerts(request):
         page_setlist_json = requests.get(f"{url}{artist_setlist_path}", params=params, headers=header).json() 
         
         if page_setlist_json.get('setlist') == None: 
-            time.sleep(0.5)
+            time.sleep(sleep)
             page_setlist_json = requests.get(f"{url}{artist_setlist_path}", params=params, headers=header).json() 
             breakpoint()
         page_setlist = page_setlist_json['setlist'] 
@@ -77,439 +77,29 @@ def display_pageone_concerts(request):
         }
 
     return render(request, 'concerts/concertslist.html', context) 
+
+
+def display_pageone_concerts(request): 
+    return display_concerts_for_page(request, 1, 2, 11, .5)
 def display_pagetwo_concerts(request): 
-    url = 'https://api.setlist.fm/rest/1.0/'
-    artist_setlist_path = 'artist/b071f9fa-14b0-4217-8e97-eb41da73f598/setlists'
-    header = {
-     # "x-api-key": "D8tTr14QrM5GLkqKQejjnNX3trT-o_cjW7gL",
-    "x-api-key": "1Lw-KTV9OFozLe7JpUeAyOdJHJH9HeVWNn2B",
-    "Accept": "application/json"
-    } 
-    params = {
-        "p": 11
-        }
-    setlists = requests.get(f"{url}{artist_setlist_path}", params=params, headers=header).json()
-    
-    x = 12
-    for x in range (12, 21): 
-        url = 'https://api.setlist.fm/rest/1.0/'
-        artist_setlist_path = 'artist/b071f9fa-14b0-4217-8e97-eb41da73f598/setlists'
-        header = {
-         # "x-api-key": "D8tTr14QrM5GLkqKQejjnNX3trT-o_cjW7gL",
-        "x-api-key": "1Lw-KTV9OFozLe7JpUeAyOdJHJH9HeVWNn2B",
-        "Accept": "application/json"
-        } 
-        params = {
-            "p": x
-            }
-        page_setlist_json = requests.get(f"{url}{artist_setlist_path}", params=params, headers=header).json() 
-        if page_setlist_json.get('setlist') == None: 
-            time.sleep(0.5)
-            page_setlist_json = requests.get(f"{url}{artist_setlist_path}", params=params, headers=header).json() 
-        page_setlist = page_setlist_json['setlist'] 
-        
-        setlists['setlist'].extend(page_setlist) 
-        x += 1 
-
-    concerts_list = []
-    i = 0 
-    for i in range(0, len(setlists['setlist'])): 
-        concertdict = {}
-        concertdict['venue'] = setlists['setlist'][i]['venue']['name']
-        concertdict['eventDate'] = setlists['setlist'][i]['eventDate']
-        concertdict['city'] = setlists['setlist'][i]['venue']['city']['name']
-        concertdict['country'] = setlists['setlist'][i]['venue']['city']['country']['name']
-        concertdict['id'] = setlists['setlist'][i]['id']
-        try: 
-            concertdict['specialinfo'] = setlists['setlist'][i]['info']
-        except: 
-            pass
-        concerts_list.append(concertdict)
-        i = i + 1 
-    context = {
-        "setlists" : concerts_list,
-        }
-
-    return render(request, 'concerts/concertslistpage2.html', context) 
+    return display_concerts_for_page(request, 11, 12, 21, .5)
 def display_pagethree_concerts(request): 
-    url = 'https://api.setlist.fm/rest/1.0/'
-    artist_setlist_path = 'artist/b071f9fa-14b0-4217-8e97-eb41da73f598/setlists'
-    header = {
-     # "x-api-key": "D8tTr14QrM5GLkqKQejjnNX3trT-o_cjW7gL",
-    "x-api-key": "1Lw-KTV9OFozLe7JpUeAyOdJHJH9HeVWNn2B",
-    "Accept": "application/json"
-    } 
-    params = {
-        "p": 21
-        }
-    setlists = requests.get(f"{url}{artist_setlist_path}", params=params, headers=header).json()
-    
-    x = 22
-    for x in range (22, 31): 
-        url = 'https://api.setlist.fm/rest/1.0/'
-        artist_setlist_path = 'artist/b071f9fa-14b0-4217-8e97-eb41da73f598/setlists'
-        header = {
-         # "x-api-key": "D8tTr14QrM5GLkqKQejjnNX3trT-o_cjW7gL",
-        "x-api-key": "1Lw-KTV9OFozLe7JpUeAyOdJHJH9HeVWNn2B",
-        "Accept": "application/json"
-        } 
-        params = {
-            "p": x
-            }
-        page_setlist_json = requests.get(f"{url}{artist_setlist_path}", params=params, headers=header).json() 
-        if page_setlist_json.get('setlist') == None: 
-            time.sleep(0.5)
-            page_setlist_json = requests.get(f"{url}{artist_setlist_path}", params=params, headers=header).json() 
-        page_setlist = page_setlist_json['setlist'] 
-        
-        setlists['setlist'].extend(page_setlist) 
-        x += 1 
-
-    concerts_list = []
-    i = 0 
-    for i in range(0, len(setlists['setlist'])): 
-        concertdict = {}
-        concertdict['venue'] = setlists['setlist'][i]['venue']['name']
-        concertdict['eventDate'] = setlists['setlist'][i]['eventDate']
-        concertdict['city'] = setlists['setlist'][i]['venue']['city']['name']
-        concertdict['country'] = setlists['setlist'][i]['venue']['city']['country']['name']
-        concertdict['id'] = setlists['setlist'][i]['id']
-        try: 
-            concertdict['specialinfo'] = setlists['setlist'][i]['info']
-        except: 
-            pass
-        concerts_list.append(concertdict)
-        i = i + 1 
-    context = {
-        "setlists" : concerts_list,
-        }
-
-    return render(request, 'concerts/concertslistpage3.html', context) 
+    return display_concerts_for_page(request, 21, 22, 31, .5)
 def display_pagefour_concerts(request): 
-    url = 'https://api.setlist.fm/rest/1.0/'
-    artist_setlist_path = 'artist/b071f9fa-14b0-4217-8e97-eb41da73f598/setlists'
-    header = {
-     # "x-api-key": "D8tTr14QrM5GLkqKQejjnNX3trT-o_cjW7gL",
-    "x-api-key": "1Lw-KTV9OFozLe7JpUeAyOdJHJH9HeVWNn2B",
-    "Accept": "application/json"
-    } 
-    params = {
-        "p": 31
-        }
-    setlists = requests.get(f"{url}{artist_setlist_path}", params=params, headers=header).json()
-    
-    x = 32
-    for x in range (31, 41): 
-        url = 'https://api.setlist.fm/rest/1.0/'
-        artist_setlist_path = 'artist/b071f9fa-14b0-4217-8e97-eb41da73f598/setlists'
-        header = {
-         # "x-api-key": "D8tTr14QrM5GLkqKQejjnNX3trT-o_cjW7gL",
-        "x-api-key": "1Lw-KTV9OFozLe7JpUeAyOdJHJH9HeVWNn2B",
-        "Accept": "application/json"
-        } 
-        params = {
-            "p": x
-            }
-        page_setlist_json = requests.get(f"{url}{artist_setlist_path}", params=params, headers=header).json() 
-        if page_setlist_json.get('setlist') == None: 
-            time.sleep(0.4)
-            page_setlist_json = requests.get(f"{url}{artist_setlist_path}", params=params, headers=header).json() 
-        page_setlist = page_setlist_json['setlist'] 
-        
-        setlists['setlist'].extend(page_setlist) 
-        x += 1 
-
-    concerts_list = []
-    i = 0 
-    for i in range(0, len(setlists['setlist'])): 
-        concertdict = {}
-        concertdict['venue'] = setlists['setlist'][i]['venue']['name']
-        concertdict['eventDate'] = setlists['setlist'][i]['eventDate']
-        concertdict['city'] = setlists['setlist'][i]['venue']['city']['name']
-        concertdict['country'] = setlists['setlist'][i]['venue']['city']['country']['name']
-        concertdict['id'] = setlists['setlist'][i]['id']
-        try: 
-            concertdict['specialinfo'] = setlists['setlist'][i]['info']
-        except: 
-            pass
-        concerts_list.append(concertdict)
-        i = i + 1 
-    context = {
-        "setlists" : concerts_list,
-        }
-
-    return render(request, 'concerts/concertslistpage4.html', context) 
+    return display_concerts_for_page(request, 31, 31, 41, .5)
 def display_pagefive_concerts(request): 
-    url = 'https://api.setlist.fm/rest/1.0/'
-    artist_setlist_path = 'artist/b071f9fa-14b0-4217-8e97-eb41da73f598/setlists'
-    header = {
-     # "x-api-key": "D8tTr14QrM5GLkqKQejjnNX3trT-o_cjW7gL",
-        "x-api-key": "1Lw-KTV9OFozLe7JpUeAyOdJHJH9HeVWNn2B",
-    "Accept": "application/json"
-    } 
-    params = {
-        "p": 41
-        }
-    setlists = requests.get(f"{url}{artist_setlist_path}", params=params, headers=header).json()
-    
-    x = 42
-    for x in range (42, 51): 
-        url = 'https://api.setlist.fm/rest/1.0/'
-        artist_setlist_path = 'artist/b071f9fa-14b0-4217-8e97-eb41da73f598/setlists'
-        header = {
-         # "x-api-key": "D8tTr14QrM5GLkqKQejjnNX3trT-o_cjW7gL",
-        "x-api-key": "1Lw-KTV9OFozLe7JpUeAyOdJHJH9HeVWNn2B",
-        "Accept": "application/json"
-        } 
-        params = {
-            "p": x
-            }
-        page_setlist_json = requests.get(f"{url}{artist_setlist_path}", params=params, headers=header).json() 
-        if page_setlist_json.get('setlist') == None: 
-            time.sleep(0.5)
-            page_setlist_json = requests.get(f"{url}{artist_setlist_path}", params=params, headers=header).json() 
-        page_setlist = page_setlist_json['setlist'] 
-        
-        setlists['setlist'].extend(page_setlist) 
-        x += 1 
-
-    concerts_list = []
-    i = 0 
-    for i in range(0, len(setlists['setlist'])): 
-        concertdict = {}
-        concertdict['venue'] = setlists['setlist'][i]['venue']['name']
-        concertdict['eventDate'] = setlists['setlist'][i]['eventDate']
-        concertdict['city'] = setlists['setlist'][i]['venue']['city']['name']
-        concertdict['country'] = setlists['setlist'][i]['venue']['city']['country']['name']
-        concertdict['id'] = setlists['setlist'][i]['id']
-        try: 
-            concertdict['specialinfo'] = setlists['setlist'][i]['info']
-        except: 
-            pass
-        concerts_list.append(concertdict)
-        i = i + 1 
-    context = {
-        "setlists" : concerts_list,
-        }
-
-    return render(request, 'concerts/concertslistpage5.html', context) 
+    return display_concerts_for_page(request, 41, 42, 51, .5)
 def display_pagesix_concerts(request): 
-    url = 'https://api.setlist.fm/rest/1.0/'
-    artist_setlist_path = 'artist/b071f9fa-14b0-4217-8e97-eb41da73f598/setlists'
-    header = {
-     # "x-api-key": "D8tTr14QrM5GLkqKQejjnNX3trT-o_cjW7gL",
-        "x-api-key": "1Lw-KTV9OFozLe7JpUeAyOdJHJH9HeVWNn2B",
-    "Accept": "application/json"
-    } 
-    params = {
-        "p": 51
-        }
-    setlists = requests.get(f"{url}{artist_setlist_path}", params=params, headers=header).json()
-    
-    x = 52
-    for x in range (52, 61): 
-        url = 'https://api.setlist.fm/rest/1.0/'
-        artist_setlist_path = 'artist/b071f9fa-14b0-4217-8e97-eb41da73f598/setlists'
-        header = {
-         # "x-api-key": "D8tTr14QrM5GLkqKQejjnNX3trT-o_cjW7gL",
-        "x-api-key": "1Lw-KTV9OFozLe7JpUeAyOdJHJH9HeVWNn2B",
-        "Accept": "application/json"
-        } 
-        params = {
-            "p": x
-            }
-        page_setlist_json = requests.get(f"{url}{artist_setlist_path}", params=params, headers=header).json() 
-        if page_setlist_json.get('setlist') == None: 
-            time.sleep(0.5)
-        page_setlist = page_setlist_json['setlist'] 
-        
-        setlists['setlist'].extend(page_setlist) 
-        x += 1 
-
-    concerts_list = []
-    i = 0 
-    for i in range(0, len(setlists['setlist'])): 
-        concertdict = {}
-        concertdict['venue'] = setlists['setlist'][i]['venue']['name']
-        concertdict['eventDate'] = setlists['setlist'][i]['eventDate']
-        concertdict['city'] = setlists['setlist'][i]['venue']['city']['name']
-        concertdict['country'] = setlists['setlist'][i]['venue']['city']['country']['name']
-        concertdict['id'] = setlists['setlist'][i]['id']
-        try: 
-            concertdict['specialinfo'] = setlists['setlist'][i]['info']
-        except: 
-            pass
-        concerts_list.append(concertdict)
-        i = i + 1 
-    context = {
-        "setlists" : concerts_list,
-        }
-
-    return render(request, 'concerts/concertslistpage6.html', context) 
+    return display_concerts_for_page(request, 51, 52, 61, .5)
 def display_pageseven_concerts(request): 
-    url = 'https://api.setlist.fm/rest/1.0/'
-    artist_setlist_path = 'artist/b071f9fa-14b0-4217-8e97-eb41da73f598/setlists'
-    header = {
-     # "x-api-key": "D8tTr14QrM5GLkqKQejjnNX3trT-o_cjW7gL",
-        "x-api-key": "1Lw-KTV9OFozLe7JpUeAyOdJHJH9HeVWNn2B",
-    "Accept": "application/json"
-    } 
-    params = {
-        "p": 61
-        }
-    setlists = requests.get(f"{url}{artist_setlist_path}", params=params, headers=header).json()
-    
-    x = 62
-    for x in range (62, 71): 
-        url = 'https://api.setlist.fm/rest/1.0/'
-        artist_setlist_path = 'artist/b071f9fa-14b0-4217-8e97-eb41da73f598/setlists'
-        header = {
-         # "x-api-key": "D8tTr14QrM5GLkqKQejjnNX3trT-o_cjW7gL",
-        "x-api-key": "1Lw-KTV9OFozLe7JpUeAyOdJHJH9HeVWNn2B",
-        "Accept": "application/json"
-        } 
-        params = {
-            "p": x
-            }
-        page_setlist_json = requests.get(f"{url}{artist_setlist_path}", params=params, headers=header).json() 
-        if page_setlist_json.get('setlist') == None: 
-            time.sleep(0.5)
-            page_setlist_json = requests.get(f"{url}{artist_setlist_path}", params=params, headers=header).json() 
-        page_setlist = page_setlist_json['setlist'] 
-        
-        setlists['setlist'].extend(page_setlist) 
-        x += 1 
-
-    concerts_list = []
-    i = 0 
-    for i in range(0, len(setlists['setlist'])): 
-        concertdict = {}
-        concertdict['venue'] = setlists['setlist'][i]['venue']['name']
-        concertdict['eventDate'] = setlists['setlist'][i]['eventDate']
-        concertdict['city'] = setlists['setlist'][i]['venue']['city']['name']
-        concertdict['country'] = setlists['setlist'][i]['venue']['city']['country']['name']
-        concertdict['id'] = setlists['setlist'][i]['id']
-        try: 
-            concertdict['specialinfo'] = setlists['setlist'][i]['info']
-        except: 
-            pass
-        concerts_list.append(concertdict)
-        i = i + 1 
-    context = {
-        "setlists" : concerts_list,
-        }
-
-    return render(request, 'concerts/concertslistpage7.html', context) 
+    return display_concerts_for_page(request, 61, 62, 71, .5)
 def display_pageeight_concerts(request): 
-    url = 'https://api.setlist.fm/rest/1.0/'
-    artist_setlist_path = 'artist/b071f9fa-14b0-4217-8e97-eb41da73f598/setlists'
-    header = {
-     # "x-api-key": "D8tTr14QrM5GLkqKQejjnNX3trT-o_cjW7gL",
-        "x-api-key": "1Lw-KTV9OFozLe7JpUeAyOdJHJH9HeVWNn2B",
-    "Accept": "application/json"
-    } 
-    params = {
-        "p": 71
-        }
-    setlists = requests.get(f"{url}{artist_setlist_path}", params=params, headers=header).json()
-    
-    x = 72
-    for x in range (72, 81): 
-        url = 'https://api.setlist.fm/rest/1.0/'
-        artist_setlist_path = 'artist/b071f9fa-14b0-4217-8e97-eb41da73f598/setlists'
-        header = {
-         # "x-api-key": "D8tTr14QrM5GLkqKQejjnNX3trT-o_cjW7gL",
-        "x-api-key": "1Lw-KTV9OFozLe7JpUeAyOdJHJH9HeVWNn2B",
-        "Accept": "application/json"
-        } 
-        params = {
-            "p": x
-            }
-        page_setlist_json = requests.get(f"{url}{artist_setlist_path}", params=params, headers=header).json() 
-        if page_setlist_json.get('setlist') == None: 
-            time.sleep(0.4)
-            page_setlist_json = requests.get(f"{url}{artist_setlist_path}", params=params, headers=header).json() 
-        
-        page_setlist = page_setlist_json['setlist'] 
-        
-        setlists['setlist'].extend(page_setlist) 
-        x += 1 
-
-    concerts_list = []
-    i = 0 
-    for i in range(0, len(setlists['setlist'])): 
-        concertdict = {}
-        concertdict['venue'] = setlists['setlist'][i]['venue']['name']
-        concertdict['eventDate'] = setlists['setlist'][i]['eventDate']
-        concertdict['city'] = setlists['setlist'][i]['venue']['city']['name']
-        concertdict['country'] = setlists['setlist'][i]['venue']['city']['country']['name']
-        concertdict['id'] = setlists['setlist'][i]['id']
-        try: 
-            concertdict['specialinfo'] = setlists['setlist'][i]['info']
-        except: 
-            pass
-        concerts_list.append(concertdict)
-        i = i + 1 
-    context = {
-        "setlists" : concerts_list,
-        }
-
-    return render(request, 'concerts/concertslistpage8.html', context) 
+    return display_concerts_for_page(request, 71, 72, 81, .5)
 def display_pagenine_concerts(request): 
-    url = 'https://api.setlist.fm/rest/1.0/'
-    artist_setlist_path = 'artist/b071f9fa-14b0-4217-8e97-eb41da73f598/setlists'
-    header = {
-     # "x-api-key": "D8tTr14QrM5GLkqKQejjnNX3trT-o_cjW7gL",
-    "x-api-key": "1Lw-KTV9OFozLe7JpUeAyOdJHJH9HeVWNn2B",
-    "Accept": "application/json"
-    } 
-    params = {
-        "p": 81
-        }
-    setlists = requests.get(f"{url}{artist_setlist_path}", params=params, headers=header).json()
-    
-    x = 82
-    for x in range (82, 91): 
-        url = 'https://api.setlist.fm/rest/1.0/'
-        artist_setlist_path = 'artist/b071f9fa-14b0-4217-8e97-eb41da73f598/setlists'
-        header = {
-         # "x-api-key": "D8tTr14QrM5GLkqKQejjnNX3trT-o_cjW7gL",
-        "x-api-key": "1Lw-KTV9OFozLe7JpUeAyOdJHJH9HeVWNn2B",
-        "Accept": "application/json"
-        } 
-        params = {
-            "p": x
-            }
-        page_setlist_json = requests.get(f"{url}{artist_setlist_path}", params=params, headers=header).json() 
-        if page_setlist_json.get('setlist') == None: 
-            time.sleep(0.5)
-            page_setlist_json = requests.get(f"{url}{artist_setlist_path}", params=params, headers=header).json() 
-        page_setlist = page_setlist_json['setlist'] 
-        
-        setlists['setlist'].extend(page_setlist) 
-        x += 1 
-
-    concerts_list = []
-    i = 0 
-    for i in range(0, len(setlists['setlist'])): 
-        concertdict = {}
-        concertdict['venue'] = setlists['setlist'][i]['venue']['name']
-        concertdict['eventDate'] = setlists['setlist'][i]['eventDate']
-        concertdict['city'] = setlists['setlist'][i]['venue']['city']['name']
-        concertdict['country'] = setlists['setlist'][i]['venue']['city']['country']['name']
-        concertdict['id'] = setlists['setlist'][i]['id']
-        try: 
-            concertdict['specialinfo'] = setlists['setlist'][i]['info']
-        except: 
-            pass
-        concerts_list.append(concertdict)
-        i = i + 1 
-    context = {
-        "setlists" : concerts_list,
-        }
-
-    return render(request, 'concerts/concertslistpage9.html', context) 
+    return display_concerts_for_page(request, 81, 82, 91, .5)
 def display_pageten_concerts(request): 
+    # return display_concerts_for_page(request, 91, 92, 110, .5)
+    
     url = 'https://api.setlist.fm/rest/1.0/'
     artist_setlist_path = 'artist/b071f9fa-14b0-4217-8e97-eb41da73f598/setlists'
     header = {
@@ -567,6 +157,7 @@ def display_pageten_concerts(request):
         }
 
     return render(request, 'concerts/concertslistpage10.html', context) 
+  
 
 def format_date(date):
     proper_date = date.split("-") 
@@ -608,12 +199,15 @@ def log_concert_and_song(request, concertdict):
                 country=concertdict['country'], 
                 )
             
-        Concert_save.save() #save instance to Concer model 
+        Concert_save.save() #save instance to Concert model 
         Concert_save.user.add(request.user) #assign user to Concert just saved (many to many needs to be created before assigned)
             
         user_concert_list.append(concertdict)  
-
         songdict = {} # {concertid: [song1, song2, etc.]} #not needed for saving song name but in case I need to reference 
+        
+        
+        
+        #grabbing songs from a concert to save 
         list_of_songs_from_api = [] 
         try: 
             list_of_songs_from_api = setlists['sets']['set'][0]['song'] #[{"name": "Shame, Shame, Shame","cover": {},},{"name": "Down the Road Apiece", "cover": { },}]
@@ -634,15 +228,15 @@ def log_concert_and_song(request, concertdict):
         for song in list_of_songs_from_api: #song = {"name": "Shame, Shame, Shame","cover": {},}
             song_name = song['name'] 
             try: 
-                Song_save = Song.objects.get(name=song_name) 
+                Song_save = Song.objects.get(name=song_name) #check to see if a song exists already 
             except: 
                 Song_save = Song(
                     name=song_name,
                 )
                 
-            Song_save.save() 
-            Song_save.user.add(request.user)
-            Concert_save.song.add(Song_save) 
+            Song_save.save() #save song instance to Song model 
+            Song_save.user.add(request.user) #many to many relationship with song and user 
+            Concert_save.song.add(Song_save) #many to many relationship with song to Concert 
 
             final_list.append(song['name']) #not really needed but made just in case needed to reference 
             songdict[concert_id_to_generate_songs] = final_list #not really needed but made just in case needed to reference 
