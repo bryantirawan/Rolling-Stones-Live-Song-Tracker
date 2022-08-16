@@ -80,23 +80,23 @@ def display_concerts_for_page(request, p, range_min, range_max, sleep):
 
 
 def display_pageone_concerts(request): 
-    return display_concerts_for_page(request, 1, 2, 11, .5)
+    return display_concerts_for_page(request, 1, 2, 11, 2)
 def display_pagetwo_concerts(request): 
-    return display_concerts_for_page(request, 11, 12, 21, .5)
+    return display_concerts_for_page(request, 11, 12, 21, 2)
 def display_pagethree_concerts(request): 
-    return display_concerts_for_page(request, 21, 22, 31, .5)
+    return display_concerts_for_page(request, 21, 22, 31, 2)
 def display_pagefour_concerts(request): 
-    return display_concerts_for_page(request, 31, 31, 41, .5)
+    return display_concerts_for_page(request, 31, 31, 41, 2)
 def display_pagefive_concerts(request): 
-    return display_concerts_for_page(request, 41, 42, 51, .5)
+    return display_concerts_for_page(request, 41, 42, 51, 2)
 def display_pagesix_concerts(request): 
-    return display_concerts_for_page(request, 51, 52, 61, .5)
+    return display_concerts_for_page(request, 51, 52, 61, 2)
 def display_pageseven_concerts(request): 
-    return display_concerts_for_page(request, 61, 62, 71, .5)
+    return display_concerts_for_page(request, 61, 62, 71, 2)
 def display_pageeight_concerts(request): 
-    return display_concerts_for_page(request, 71, 72, 81, .5)
+    return display_concerts_for_page(request, 71, 72, 81, 2)
 def display_pagenine_concerts(request): 
-    return display_concerts_for_page(request, 81, 82, 91, .5)
+    return display_concerts_for_page(request, 81, 82, 91, 2)
 def display_pageten_concerts(request): 
     # return display_concerts_for_page(request, 91, 92, 110, .5)
     
@@ -162,7 +162,7 @@ def display_pageten_concerts(request):
 def format_date(date):
     proper_date = date.split("-") 
     #proper_date_list = [MM, DD, YEAR] 
-    return proper_date[2] + "-" + proper_date[1] + "-" + proper_date[0]
+    return proper_date[2] + "-" + proper_date[1] + "-" + proper_date[0] 
 
 
 def log_concert_and_song(request, concertdict):

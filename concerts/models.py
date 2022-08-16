@@ -2,7 +2,8 @@ from django.db import models
 from django.conf import settings
 from django.shortcuts import render  
 
-USER_MODEL = settings.AUTH_USER_MODEL
+USER_MODEL = settings.AUTH_USER_MODEL 
+
 
 class Concert(models.Model):
     venue = models.CharField(max_length=200, null=True)
@@ -22,4 +23,9 @@ class Song(models.Model):
 
     def __str__(self):
         return self.name
+
+# class User 
+#username, pw, counter per song? 
+    #def count song method 
+
 
